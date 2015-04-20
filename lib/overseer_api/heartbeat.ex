@@ -24,9 +24,9 @@ defmodule OpenAperture.OverseerApi.Heartbeat do
   """
   @spec start_link() :: {:ok, pid} | {:error, String.t()}  
   def start_link() do
-    Logger.debug("Starting Heartbeat...")
+    Logger.debug("[OverseerApi][Heartbeat] Starting...")
 
-    case GenServer.start_link(__MODULE__, %{}, []) do
+    case GenServer.start_link(__MODULE__, %{}, name: __MODULE__) do
       {:ok, pid} ->
         if Application.get_env(:openaperture_overseer_api, :autostart, true) do
           GenServer.cast(pid, {:publish})
@@ -61,16 +61,22 @@ defmodule OpenAperture.OverseerApi.Heartbeat do
   @spec handle_cast({:publish}, Map) :: {:noreply, Map}
   def handle_cast({:publish}, state) do
     :timer.sleep(30000)
-    Logger.debug("Heartbeating...")
+    Logger.debug("[OverseerApi][Heartbeat] Heartbeat...")
     publish_status_event(state)
     GenServer.cast(__MODULE__, {:publish})
     {:noreply, state}
   end
 
   def publish_status_event(state) do
+    workload = if state[:workload] == nil do
+      []
+    else
+      state[:workload]
+    end
+
     Publisher.publish_event(%StatusEvent{
       status: :active,
-      workload: state[:workload]
+      workload: workload
     })    
   end
 

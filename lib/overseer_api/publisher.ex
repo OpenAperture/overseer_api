@@ -33,13 +33,13 @@ defmodule OpenAperture.OverseerApi.Publisher do
   """
   @spec start_link() :: {:ok, pid} | {:error, String.t()}	
   def start_link() do
-    Logger.debug("Starting OverseerApi.Publisher...")
+    Logger.debug("[OverseerApi][Publisher] Starting...")
 
     state = %{
       exchange_id: Application.get_env(:openaperture_overseer_api, :exchange_id),
       broker_id: Application.get_env(:openaperture_overseer_api, :broker_id),
     }
-    GenServer.start_link(__MODULE__, state, [])
+    GenServer.start_link(__MODULE__, state, name: __MODULE__)
   end
 
   @doc """
@@ -66,7 +66,7 @@ defmodule OpenAperture.OverseerApi.Publisher do
   """
   @spec handle_cast({:publish_event, Event.t}, Map) :: {:noreply, Map}
   def handle_cast({:publish_event, event}, state) do
-    Logger.debug("Publishing #{inspect Event.type(event)} event to Overseer...")
+    Logger.debug("[OverseerApi][Publisher] Publishing #{inspect Event.type(event)} event to Overseer...")
 
     module = ModuleRegistration.get_module
 
@@ -79,8 +79,8 @@ defmodule OpenAperture.OverseerApi.Publisher do
 		event_queue = QueueBuilder.build(ManagerApi.get_api, "module_#{module[:hostname]}", state[:exchange_id], [durable: false])
 
 		case publish(options, event_queue, payload) do
-			:ok -> Logger.debug("Successfully published Overseer #{inspect Event.type(event)} event")
-			{:error, reason} -> Logger.error("Failed to publish Overseer #{inspect Event.type(event)} event:  #{inspect reason}")
+			:ok -> Logger.debug("[OverseerApi][Publisher] Successfully published Overseer #{inspect Event.type(event)} event")
+			{:error, reason} -> Logger.error("[OverseerApi][Publisher] Failed to publish Overseer #{inspect Event.type(event)} event:  #{inspect reason}")
 		end
     {:noreply, state}
   end

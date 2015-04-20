@@ -30,7 +30,7 @@ defmodule OpenAperture.OverseerApi.ModuleRegistration do
         if Application.get_env(:openaperture_overseer_api, :autostart, true) do
           case register_module(module) do
             true -> {:ok, pid}
-            false -> {:error, "Failed to register module #{module[:hostname]}!"}
+            false -> {:error, "[OverseerApi][ModuleRegistration] Failed to register module #{module[:hostname]}!"}
           end
         else
           {:ok, pid}
@@ -48,7 +48,7 @@ defmodule OpenAperture.OverseerApi.ModuleRegistration do
   """
   @spec register_module(Map) :: term
   def register_module(module) do
-    Logger.debug("Registering module #{module[:hostname]} (#{module[:type]}) with OpenAperture...")
+    Logger.debug("[OverseerApi][ModuleRegistration] Registering module #{module[:hostname]} (#{module[:type]}) with OpenAperture...")
     if module[:workload] != nil do
       module = Map.put(module, :workload, Poison.encode!(module[:workload]))
     end
@@ -56,14 +56,14 @@ defmodule OpenAperture.OverseerApi.ModuleRegistration do
       nil -> 
         response = MessagingExchangeModule.create_module(Application.get_env(:openaperture_overseer_api, :exchange_id), module)
         if response.success? do
-          Logger.debug("Successfully registered module #{module[:hostname]}")
+          Logger.debug("[OverseerApi][ModuleRegistration] Successfully registered module #{module[:hostname]}")
           true
         else
-          Logger.error("Failed to registered module #{module[:hostname]}!  module - #{inspect module}, status - #{inspect response.status}, errors - #{inspect response.raw_body}")
+          Logger.error("[OverseerApi][ModuleRegistration] Failed to registered module #{module[:hostname]}!  module - #{inspect module}, status - #{inspect response.status}, errors - #{inspect response.raw_body}")
           false      
         end
       location -> 
-        Logger.debug("Successfully registered module #{module[:hostname]} (#{inspect location})")
+        Logger.debug("[OverseerApi][ModuleRegistration] Successfully registered module #{module[:hostname]} (#{inspect location})")
         true
     end    
   end
