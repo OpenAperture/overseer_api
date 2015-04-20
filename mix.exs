@@ -29,6 +29,8 @@ defmodule OpenAperture.OverseerApi.Mixfile do
   # Type `mix help deps` for more examples and options
   defp deps do
     [
+      {:ex_doc, github: "elixir-lang/ex_doc", only: [:test]},
+      {:markdown, github: "devinus/markdown", only: [:test]},    
       {:poison, "~> 1.3.1"},
       {:openaperture_messaging, git: "https://#{System.get_env("GITHUB_OAUTH_TOKEN")}:x-oauth-basic@github.com/OpenAperture/messaging.git", 
         ref: "671d48c1eb385747b57c41edda2065c9bb8171ba", override: true},
