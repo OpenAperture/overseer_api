@@ -1,5 +1,7 @@
 # OpenAperture.OverseerApi
 
+[![Build Status](https://semaphoreci.com/api/v1/projects/dffc2359-1999-494b-ba24-667b9cc372c8/403150/badge.svg)](https://semaphoreci.com/perceptive/overseer_api)
+
 This reusable Elixir messaging library provides an application for interacting with the Overseer system module.  It provides the following features:
 
 * Provides a Publisher to send events to the Overseer associated with the exchange
