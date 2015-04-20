@@ -56,7 +56,7 @@ defmodule OpenAperture.OverseerApi.ModuleRegistration do
           Logger.debug("Successfully registered module #{module[:hostname]}")
           true
         else
-          Logger.error("Failed to registered module #{module[:hostname]}!  Status - #{inspect response.status}, errors - #{inspect response.raw_body}")
+          Logger.error("Failed to registered module #{module[:hostname]}!  module - #{inspect module}, status - #{inspect response.status}, errors - #{inspect response.raw_body}")
           false      
         end
       location -> 
