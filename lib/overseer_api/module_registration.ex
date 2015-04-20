@@ -51,8 +51,14 @@ defmodule OpenAperture.OverseerApi.ModuleRegistration do
     Logger.debug("Registering module #{module[:hostname]} (#{module[:type]}) with OpenAperture...")
     case MessagingExchangeModule.create_module!(Application.get_env(:openaperture_overseer_api, :exchange_id), module) do
       nil -> 
-        Logger.error("Failed to registered module #{module[:hostname]}!")
-        false      
+        response = MessagingExchangeModule.create_module(Application.get_env(:openaperture_overseer_api, :exchange_id), module)
+        if response.success? do
+          Logger.debug("Successfully registered module #{module[:hostname]}")
+          true
+        else
+          Logger.error("Failed to registered module #{module[:hostname]}!  Status - #{inspect response.status}, errors - #{inspect response.raw_body}")
+          false      
+        end
       location -> 
         Logger.debug("Successfully registered module #{module[:hostname]} (#{inspect location})")
         true

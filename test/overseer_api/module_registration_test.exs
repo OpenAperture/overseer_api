@@ -3,6 +3,7 @@ defmodule OpenAperture.OverseerApi.ModuleRegistrationTest do
 
   alias OpenAperture.OverseerApi.ModuleRegistration
   alias OpenAperture.ManagerApi.MessagingExchangeModule
+  alias OpenAperture.ManagerApi.Response
 
   #===============================
   # register_module tests
@@ -25,6 +26,7 @@ defmodule OpenAperture.OverseerApi.ModuleRegistrationTest do
   test "register_module - failure" do 
     :meck.new(MessagingExchangeModule, [:passthrough])
     :meck.expect(MessagingExchangeModule, :create_module!, fn _, _ -> nil end)
+    :meck.expect(MessagingExchangeModule, :create_module, fn _, _ -> %Response{status: 400, body: "{\"errors\": []}"} end)
 
     module = %{
       hostname: System.get_env("HOSTNAME"),
