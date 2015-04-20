@@ -9,7 +9,7 @@ defmodule OpenAperture.OverseerApi.ModuleRegistrationTest do
 
   test "register_module - success" do 
     :meck.new(MessagingExchangeModule, [:passthrough])
-    :meck.expect(MessagingExchangeModule, :create_module!, fn _, _ -> true end)
+    :meck.expect(MessagingExchangeModule, :create_module!, fn _, _ -> "/messaging/exchanges/1/modules/123" end)
 
     module = %{
       hostname: System.get_env("HOSTNAME"),
@@ -24,7 +24,7 @@ defmodule OpenAperture.OverseerApi.ModuleRegistrationTest do
 
   test "register_module - failure" do 
     :meck.new(MessagingExchangeModule, [:passthrough])
-    :meck.expect(MessagingExchangeModule, :create_module!, fn _, _ -> false end)
+    :meck.expect(MessagingExchangeModule, :create_module!, fn _, _ -> nil end)
 
     module = %{
       hostname: System.get_env("HOSTNAME"),
