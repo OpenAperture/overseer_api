@@ -30,10 +30,11 @@ defmodule OpenAperture.OverseerApi.ModuleRegistration do
         if Application.get_env(:openaperture_overseer_api, :autostart, true) do
           case register_module(module) do
             true -> {:ok, pid}
-            false -> {:error, "Failed to registered module #{module[:hostname]}!"}
+            false -> {:error, "Failed to register module #{module[:hostname]}!"}
           end
+        else
+          {:ok, pid}
         end
-        {:ok, pid}
       {:error, reason} -> {:error, reason}
     end
   end
