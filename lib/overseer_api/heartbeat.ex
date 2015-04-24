@@ -24,7 +24,7 @@ defmodule OpenAperture.OverseerApi.Heartbeat do
   """
   @spec start_link() :: {:ok, pid} | {:error, String.t()}  
   def start_link() do
-    Logger.debug("[OverseerApi][Heartbeat] Starting...")
+    Logger.debug("[Heartbeat] Starting...")
 
     case GenServer.start_link(__MODULE__, %{}, name: __MODULE__) do
       {:ok, pid} ->
@@ -61,7 +61,7 @@ defmodule OpenAperture.OverseerApi.Heartbeat do
   @spec handle_cast({:publish}, Map) :: {:noreply, Map}
   def handle_cast({:publish}, state) do
     :timer.sleep(30000)
-    Logger.debug("[OverseerApi][Heartbeat] Heartbeat...")
+    Logger.debug("[Heartbeat] Heartbeat...")
     publish_status_event(state)
     GenServer.cast(__MODULE__, {:publish})
     {:noreply, state}

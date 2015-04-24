@@ -32,10 +32,8 @@ defmodule OpenAperture.OverseerApi.Mixfile do
       {:ex_doc, github: "elixir-lang/ex_doc", only: [:test]},
       {:markdown, github: "devinus/markdown", only: [:test]},    
       {:poison, "~> 1.3.1"},
-      {:openaperture_messaging, git: "https://#{System.get_env("GITHUB_OAUTH_TOKEN")}:x-oauth-basic@github.com/OpenAperture/messaging.git", 
-        ref: "671d48c1eb385747b57c41edda2065c9bb8171ba", override: true},
-      {:openaperture_manager_api, git: "https://#{System.get_env("GITHUB_OAUTH_TOKEN")}:x-oauth-basic@github.com/OpenAperture/manager_api.git", 
-        ref: "7698785f22fb5084671882e4bf14a8824804d53a", override: true},
+      {:openaperture_messaging, git: "https://github.com/OpenAperture/messaging.git", ref: "11061d019bab15c4b43425f7cdb50899eef05b45", override: true},
+      {:openaperture_manager_api, git: "https://github.com/OpenAperture/manager_api.git", ref: "ae629a4127acceac8a9791c85e5a0d3b67d1ad16", override: true},
 
       #test dependencies
       {:exvcr, github: "parroty/exvcr", override: true},

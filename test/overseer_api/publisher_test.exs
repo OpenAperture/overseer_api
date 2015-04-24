@@ -22,7 +22,7 @@ defmodule OpenAperture.OverseerApi.PublisherTest do
   	:meck.expect(ConnectionPool, :publish, fn _, _, _, _ -> :ok end)
 
     :meck.new(QueueBuilder, [:passthrough])
-    :meck.expect(QueueBuilder, :build, fn _,_,_,_ -> %OpenAperture.Messaging.Queue{name: ""} end)      
+    :meck.expect(QueueBuilder, :build, fn _,_,_ -> %OpenAperture.Messaging.Queue{name: ""} end)      
 
     :meck.new(ConnectionOptionsResolver, [:passthrough])
     :meck.expect(ConnectionOptionsResolver, :get_for_broker, fn _, _ -> %AMQPConnectionOptions{} end)
