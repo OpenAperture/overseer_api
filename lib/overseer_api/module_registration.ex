@@ -49,9 +49,6 @@ defmodule OpenAperture.OverseerApi.ModuleRegistration do
   @spec register_module(Map) :: term
   def register_module(module) do
     Logger.debug("[ModuleRegistration] Registering module #{module[:hostname]} (#{module[:type]}) with OpenAperture...")
-    if module[:workload] != nil do
-      module = Map.put(module, :workload, Poison.encode!(module[:workload]))
-    end
     case MessagingExchangeModule.create_module!(Application.get_env(:openaperture_overseer_api, :exchange_id), module) do
       nil -> 
         response = MessagingExchangeModule.create_module(Application.get_env(:openaperture_overseer_api, :exchange_id), module)
