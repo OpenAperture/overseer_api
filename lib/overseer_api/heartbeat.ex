@@ -31,6 +31,8 @@ defmodule OpenAperture.OverseerApi.Heartbeat do
         if Application.get_env(:openaperture_overseer_api, :autostart, true) do
           GenServer.cast(pid, {:publish})
         end
+
+        Agent.start_link(fn -> [] end, name: HeartbeatWorkload)
         {:ok, pid}
       {:error, reason} -> {:error, reason}
     end
@@ -49,7 +51,7 @@ defmodule OpenAperture.OverseerApi.Heartbeat do
   """
   @spec set_workload(List) :: :ok
   def set_workload(workload) do
-    GenServer.call(__MODULE__, {:set_workload, workload})
+    Agent.update(HeartbeatWorkload, fn _ -> workload end)
   end
 
   @doc """
@@ -68,26 +70,16 @@ defmodule OpenAperture.OverseerApi.Heartbeat do
   end
 
   def publish_status_event(state) do
-    workload = if state[:workload] == nil do
+    workload = Agent.get(HeartbeatWorkload, fn workload -> workload end)
+    workload = if workload == nil do
       []
     else
-      state[:workload]
+      workload
     end
 
     Publisher.publish_event(%StatusEvent{
       status: :active,
       workload: workload
     })    
-  end
-
-  @doc """
-  GenServer callback for handling the :set_workflow event.  This method
-  will store the current worklow into the server's state.
-
-  {:noreply, state}
-  """
-  @spec handle_call({:set_workload, List}, term, Map) :: {:reply, :ok, Map}
-  def handle_call({:set_workload, workload}, _from, state) do
-    {:reply, :ok, Map.put(state, :workload, workload)}
   end
 end
