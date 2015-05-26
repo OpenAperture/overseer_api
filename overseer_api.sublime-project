@@ -10,7 +10,7 @@
         "linters": {
             "elixirc": {
                 "pa": [
-                  "${project}/_build/dev/lib/overseer_api/ebin",
+                  "${project}/_build/dev/lib/openaperture_overseer_api/ebin",
                 ]
             }
         }
