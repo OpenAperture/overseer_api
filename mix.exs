@@ -30,7 +30,7 @@ defmodule OpenAperture.OverseerApi.Mixfile do
   defp deps do
     [
       {:ex_doc, "0.7.3", only: :test},
-      {:earmark, "0.1.17", only: :test},
+      {:earmark, "0.1.17", only: :test},  
       {:poison, "~> 1.3.1"},
       {:openaperture_messaging, git: "https://github.com/OpenAperture/messaging.git", ref: "11061d019bab15c4b43425f7cdb50899eef05b45", override: true},
       {:openaperture_manager_api, git: "https://github.com/OpenAperture/manager_api.git", ref: "ae629a4127acceac8a9791c85e5a0d3b67d1ad16", override: true},
