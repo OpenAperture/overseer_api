@@ -61,8 +61,22 @@ defmodule OpenAperture.OverseerApi.Publisher do
   	GenServer.cast(__MODULE__, {:publish_event, event})
 	end
 
-  def publish_request(request) do
-    GenServer.cast(__MODULE__, {:publish_request, request})
+  @doc """
+  Method to publish Requests to an Overseer in a specific exchange
+
+  ## Option Values
+
+  The `request` options represents the Request to publish
+
+  The `dest_exchange_id` represents the exchange in which the Overseer should exist
+
+  ## Return Value
+
+  :ok
+  """
+  @spec publish_request(Request.t, term) :: :ok
+  def publish_request(request, dest_exchange_id) do
+    GenServer.cast(__MODULE__, {:publish_request, request, dest_exchange_id})
   end
 
   @doc """
@@ -96,16 +110,22 @@ defmodule OpenAperture.OverseerApi.Publisher do
   GenServer callback for handling the :publish_request event.  This method
   will publish requests to the Overseer system module
 
+  ## Option Values
+
+  The `request` option defines the Request to be processed
+
+  The `dest_exchange_id` represents the exchange in which the Overseer should exist
+
   {:noreply, state}
   """
-  @spec handle_cast({:publish_request, Request.t}, Map) :: {:noreply, Map}
-  def handle_cast({:publish_request, request}, state) do
-    Logger.debug("#{@logprefix} Publishing request to Overseer...")
+  @spec handle_cast({:publish_request, Request.t, String.t}, Map) :: {:noreply, Map}
+  def handle_cast({:publish_request, request, dest_exchange_id}, state) do
+    Logger.debug("#{@logprefix} Publishing request to Overseer in exchange #{inspect dest_exchange_id}...")
 
     payload = Request.to_payload(request)
     
-    options = ConnectionOptionsResolver.get_for_broker(ManagerApi.get_api, state[:broker_id])
-    queue = QueueBuilder.build(ManagerApi.get_api, "overseer", state[:exchange_id])
+    options = ConnectionOptionsResolver.resolve(ManagerApi.get_api, state[:broker_id], state[:exchange_id], dest_exchange_id)
+    queue = QueueBuilder.build(ManagerApi.get_api, "overseer", dest_exchange_id)
 
     case publish(options, queue, payload) do
       :ok -> Logger.debug("[#{@logprefix} Successfully published request to Overseer")

@@ -57,7 +57,7 @@ defmodule OpenAperture.OverseerApi.PublisherTest do
     :meck.expect(QueueBuilder, :build, fn _,_,_ -> %OpenAperture.Messaging.Queue{name: ""} end)      
 
     :meck.new(ConnectionOptionsResolver, [:passthrough])
-    :meck.expect(ConnectionOptionsResolver, :get_for_broker, fn _, _ -> %AMQPConnectionOptions{} end)
+    :meck.expect(ConnectionOptionsResolver, :resolve, fn _,_,_,_ -> %AMQPConnectionOptions{} end)
 
     state = %{
     }
@@ -66,7 +66,7 @@ defmodule OpenAperture.OverseerApi.PublisherTest do
       action: :upgrade_request,
       options: %{force: true}
     }
-    assert Publisher.handle_cast({:publish_request, request}, state) == {:noreply, state}
+    assert Publisher.handle_cast({:publish_request, request, 1}, state) == {:noreply, state}
   after
     :meck.unload(ConnectionPool)
     :meck.unload(ConnectionPools)
