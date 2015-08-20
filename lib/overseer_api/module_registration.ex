@@ -16,7 +16,7 @@ defmodule OpenAperture.OverseerApi.ModuleRegistration do
 
   {:ok, pid} | {:error, reason}
   """
-  @spec start_link() :: {:ok, pid} | {:error, String.t()}
+  @spec start_link() :: {:ok, pid} | {:error, String.t}
   def start_link() do
     module = %{
       hostname: System.get_env("HOSTNAME"),

@@ -22,7 +22,7 @@ defmodule OpenAperture.OverseerApi.Heartbeat do
 
   {:ok, pid} | {:error, reason}
   """
-  @spec start_link() :: {:ok, pid} | {:error, String.t()}
+  @spec start_link() :: {:ok, pid} | {:error, String.t}
   def start_link() do
     Logger.debug("[Heartbeat] Starting...")
 
