@@ -89,13 +89,7 @@ defmodule OpenAperture.OverseerApi.Publisher do
   def handle_cast({:publish_event, event}, state) do
     Logger.debug("#{@logprefix} Publishing #{inspect Event.type(event)} event to Overseer...")
 
-    module = ModuleRegistration.get_module
-
-    payload = Map.from_struct(event)
-    payload = Map.put(payload, :hostname, module[:hostname])
-    payload = Map.put(payload, :type, module[:type])
-    payload = Map.put(payload, :event_type, Event.type(event))
-
+    payload = payload_from(event)
     options = ConnectionOptionsResolver.get_for_broker(ManagerApi.get_api, state[:broker_id])
     event_queue = QueueBuilder.build(ManagerApi.get_api, "system_modules", state[:exchange_id])
 
@@ -133,4 +127,14 @@ defmodule OpenAperture.OverseerApi.Publisher do
     end
     {:noreply, state}
   end
+
+  @spec payload_from(Event.t) :: map
+  defp payload_from(event) do
+    module  = ModuleRegistration.get_module
+    payload = Map.from_struct(event)
+    payload = Map.put(payload, :hostname, module[:hostname])
+    payload = Map.put(payload, :type, module[:type])
+    payload = Map.put(payload, :event_type, Event.type(event))
+  end
+
 end
