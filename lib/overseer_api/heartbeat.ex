@@ -70,15 +70,10 @@ defmodule OpenAperture.OverseerApi.Heartbeat do
   end
 
   def publish_status_event(_state) do
-    workload = Agent.get(HeartbeatWorkload, fn workload -> workload end)
-    workload = if workload == nil do
-      []
-    else
-      workload
-    end
+    workload = Agent.get(HeartbeatWorkload, fn workload -> workload end) || []
 
     Publisher.publish_event(%StatusEvent{
-      status: :active,
+      status:   :active,
       workload: workload
     })
   end
