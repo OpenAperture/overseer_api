@@ -21,7 +21,7 @@ defmodule OpenAperture.OverseerApi.Request do
 
   OpenAperture.OverseerApi.Request.t
   """
-  @spec from_payload(Map) :: OpenAperture.OverseerApi.Request.t
+  @spec from_payload(map) :: OpenAperture.OverseerApi.Request.t
   def from_payload(payload) do
     %OpenAperture.OverseerApi.Request{
       action: payload[:action],
@@ -29,7 +29,7 @@ defmodule OpenAperture.OverseerApi.Request do
     }
   end
 
-  @spec to_payload(OpenAperture.OverseerApi.Request.t) :: Map
+  @spec to_payload(OpenAperture.OverseerApi.Request.t) :: map
   def to_payload(request) do
     Map.from_struct(request)
   end

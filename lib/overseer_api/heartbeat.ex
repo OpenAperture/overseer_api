@@ -60,7 +60,7 @@ defmodule OpenAperture.OverseerApi.Heartbeat do
 
   {:noreply, state}
   """
-  @spec handle_cast({:publish}, Map) :: {:noreply, Map}
+  @spec handle_cast({:publish}, map) :: {:noreply, map}
   def handle_cast({:publish}, state) do
     :timer.sleep(30000)
     Logger.debug("[Heartbeat] Heartbeat...")

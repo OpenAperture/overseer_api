@@ -85,7 +85,7 @@ defmodule OpenAperture.OverseerApi.Publisher do
 
   {:noreply, state}
   """
-  @spec handle_cast({:publish_event, Event.t}, Map) :: {:noreply, Map}
+  @spec handle_cast({:publish_event, Event.t}, map) :: {:noreply, map}
   def handle_cast({:publish_event, event}, state) do
     Logger.debug("#{@logprefix} Publishing #{inspect Event.type(event)} event to Overseer...")
 
@@ -118,7 +118,7 @@ defmodule OpenAperture.OverseerApi.Publisher do
 
   {:noreply, state}
   """
-  @spec handle_cast({:publish_request, Request.t, String.t}, Map) :: {:noreply, Map}
+  @spec handle_cast({:publish_request, Request.t, String.t}, map) :: {:noreply, map}
   def handle_cast({:publish_request, request, dest_exchange_id}, state) do
     Logger.debug("#{@logprefix} Publishing request to Overseer in exchange #{inspect dest_exchange_id}...")
 

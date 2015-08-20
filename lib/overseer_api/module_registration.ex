@@ -46,7 +46,7 @@ defmodule OpenAperture.OverseerApi.ModuleRegistration do
 
   boolean
   """
-  @spec register_module(Map) :: term
+  @spec register_module(map) :: term
   def register_module(module) do
     Logger.debug("[ModuleRegistration] Registering module #{module[:hostname]} (#{module[:type]}) with OpenAperture...")
     case MessagingExchangeModule.create_module!(Application.get_env(:openaperture_overseer_api, :exchange_id), module) do
@@ -72,7 +72,7 @@ defmodule OpenAperture.OverseerApi.ModuleRegistration do
 
   Map
   """
-  @spec get_module :: Map
+  @spec get_module :: map
   def get_module do
     Agent.get(__MODULE__, fn module -> module end)
   end
