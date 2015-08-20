@@ -40,7 +40,7 @@ defmodule OpenAperture.OverseerApi.Publisher do
 
     state = %{
       exchange_id: Application.get_env(:openaperture_overseer_api, :exchange_id),
-      broker_id: Application.get_env(:openaperture_overseer_api, :broker_id),
+      broker_id:   Application.get_env(:openaperture_overseer_api, :broker_id),
     }
     GenServer.start_link(__MODULE__, state, name: __MODULE__)
   end
