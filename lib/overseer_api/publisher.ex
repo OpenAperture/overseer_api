@@ -130,11 +130,10 @@ defmodule OpenAperture.OverseerApi.Publisher do
 
   @spec payload_from(Event.t) :: map
   defp payload_from(event) do
-    module  = ModuleRegistration.get_module
-    payload = Map.from_struct(event)
-    payload = Map.put(payload, :hostname, module[:hostname])
-    payload = Map.put(payload, :type, module[:type])
-    payload = Map.put(payload, :event_type, Event.type(event))
+    module = ModuleRegistration.get_module
+    Map.from_struct(event)
+      |> Map.put(:hostname, module[:hostname])
+      |> Map.put(:type, module[:type])
+      |> Map.put(:event_type, Event.type(event))
   end
-
 end
