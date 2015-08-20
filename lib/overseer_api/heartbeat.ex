@@ -49,7 +49,7 @@ defmodule OpenAperture.OverseerApi.Heartbeat do
 
   :ok
   """
-  @spec set_workload(List) :: :ok
+  @spec set_workload(list) :: :ok
   def set_workload(workload) do
     Agent.update(HeartbeatWorkload, fn _ -> workload end)
   end
