@@ -6,7 +6,7 @@
 require Logger
 
 defmodule OpenAperture.OverseerApi do
-	use Application
+  use Application
 
   @moduledoc """
   This module contains the application for the Overseer Api

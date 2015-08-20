@@ -1,7 +1,7 @@
 require Logger
 
 defmodule OpenAperture.OverseerApi.ModuleRegistration do
-	use GenServer
+  use GenServer
 
   @moduledoc """
   This module contains the GenServer for a system module to interact with the Overseer system module
@@ -19,8 +19,8 @@ defmodule OpenAperture.OverseerApi.ModuleRegistration do
   @spec start_link() :: {:ok, pid} | {:error, String.t()}
   def start_link() do
     module = %{
-    	hostname: System.get_env("HOSTNAME"),
-    	type: Application.get_env(:openaperture_overseer_api, :module_type),
+      hostname: System.get_env("HOSTNAME"),
+      type: Application.get_env(:openaperture_overseer_api, :module_type),
       status: :active,
       workload: []
     }

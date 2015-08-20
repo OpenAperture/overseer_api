@@ -6,7 +6,7 @@
 require Logger
 
 defmodule OpenAperture.OverseerApi.Heartbeat do
-	use GenServer
+  use GenServer
 
   alias OpenAperture.OverseerApi.Publisher
   alias OpenAperture.OverseerApi.Events.Status, as: StatusEvent

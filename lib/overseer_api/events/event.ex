@@ -13,6 +13,6 @@ defprotocol OpenAperture.OverseerApi.Events.Event do
 
   term
   """
-	@spec type(any) :: term
-	def type(event)
+  @spec type(any) :: term
+  def type(event)
 end
