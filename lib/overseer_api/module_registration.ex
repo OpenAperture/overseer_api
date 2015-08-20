@@ -20,8 +20,8 @@ defmodule OpenAperture.OverseerApi.ModuleRegistration do
   def start_link() do
     module = %{
       hostname: System.get_env("HOSTNAME"),
-      type: Application.get_env(:openaperture_overseer_api, :module_type),
-      status: :active,
+      type:     Application.get_env(:openaperture_overseer_api, :module_type),
+      status:   :active,
       workload: []
     }
 
@@ -29,7 +29,7 @@ defmodule OpenAperture.OverseerApi.ModuleRegistration do
       {:ok, pid} ->
         if Application.get_env(:openaperture_overseer_api, :autostart, true) do
           case register_module(module) do
-            true -> {:ok, pid}
+            true  -> {:ok, pid}
             false -> {:error, "[ModuleRegistration] Failed to register module #{module[:hostname]}!"}
           end
         else
