@@ -1,6 +1,6 @@
 defmodule OpenAperture.OverseerApi.Request do
 
-  
+
   @moduledoc """
   Methods and Request struct for OverseerApi requests
   """
@@ -32,5 +32,5 @@ defmodule OpenAperture.OverseerApi.Request do
   @spec to_payload(OpenAperture.OverseerApi.Request.t) :: Map
   def to_payload(request) do
     Map.from_struct(request)
-  end 
+  end
 end

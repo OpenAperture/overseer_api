@@ -5,7 +5,7 @@ defmodule OpenAperture.OverseerApi.ModuleRegistration do
 
   @moduledoc """
   This module contains the GenServer for a system module to interact with the Overseer system module
-  """  
+  """
 
   alias OpenAperture.ManagerApi.MessagingExchangeModule
 
@@ -16,15 +16,15 @@ defmodule OpenAperture.OverseerApi.ModuleRegistration do
 
   {:ok, pid} | {:error, reason}
   """
-  @spec start_link() :: {:ok, pid} | {:error, String.t()}	
+  @spec start_link() :: {:ok, pid} | {:error, String.t()}
   def start_link() do
     module = %{
     	hostname: System.get_env("HOSTNAME"),
     	type: Application.get_env(:openaperture_overseer_api, :module_type),
       status: :active,
-      workload: []      
+      workload: []
     }
-    
+
     case Agent.start_link(fn ->module end, name: __MODULE__) do
       {:ok, pid} ->
         if Application.get_env(:openaperture_overseer_api, :autostart, true) do
@@ -50,19 +50,19 @@ defmodule OpenAperture.OverseerApi.ModuleRegistration do
   def register_module(module) do
     Logger.debug("[ModuleRegistration] Registering module #{module[:hostname]} (#{module[:type]}) with OpenAperture...")
     case MessagingExchangeModule.create_module!(Application.get_env(:openaperture_overseer_api, :exchange_id), module) do
-      nil -> 
+      nil ->
         response = MessagingExchangeModule.create_module(Application.get_env(:openaperture_overseer_api, :exchange_id), module)
         if response.success? do
           Logger.debug("[ModuleRegistration] Successfully registered module #{module[:hostname]}")
           true
         else
           Logger.error("[ModuleRegistration] Failed to registered module #{module[:hostname]}!  module - #{inspect module}, status - #{inspect response.status}, errors - #{inspect response.raw_body}")
-          false      
+          false
         end
-      location -> 
+      location ->
         Logger.debug("[ModuleRegistration] Successfully registered module #{module[:hostname]} (#{inspect location})")
         true
-    end    
+    end
   end
 
   @doc """

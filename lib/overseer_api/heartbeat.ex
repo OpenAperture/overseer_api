@@ -13,7 +13,7 @@ defmodule OpenAperture.OverseerApi.Heartbeat do
 
   @moduledoc """
   This module contains the GenServer for a system module to interact with the Overseer system module
-  """  
+  """
 
   @doc """
   Specific start_link implementation
@@ -22,7 +22,7 @@ defmodule OpenAperture.OverseerApi.Heartbeat do
 
   {:ok, pid} | {:error, reason}
   """
-  @spec start_link() :: {:ok, pid} | {:error, String.t()}  
+  @spec start_link() :: {:ok, pid} | {:error, String.t()}
   def start_link() do
     Logger.debug("[Heartbeat] Starting...")
 
@@ -80,6 +80,6 @@ defmodule OpenAperture.OverseerApi.Heartbeat do
     Publisher.publish_event(%StatusEvent{
       status: :active,
       workload: workload
-    })    
+    })
   end
 end

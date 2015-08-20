@@ -10,7 +10,7 @@ defmodule OpenAperture.OverseerApi do
 
   @moduledoc """
   This module contains the application for the Overseer Api
-  """  
+  """
 
   @doc """
   Starts the given `_type`.

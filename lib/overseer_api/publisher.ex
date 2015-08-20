@@ -12,7 +12,7 @@ defmodule OpenAperture.OverseerApi.Publisher do
 
   @moduledoc """
   This module contains the GenServer for a system module to interact with the Overseer system module
-  """  
+  """
 
   alias OpenAperture.Messaging.ConnectionOptionsResolver
   alias OpenAperture.Messaging.AMQP.QueueBuilder
@@ -34,7 +34,7 @@ defmodule OpenAperture.OverseerApi.Publisher do
 
   {:ok, pid} | {:error, reason}
   """
-  @spec start_link() :: {:ok, pid} | {:error, String.t()}	
+  @spec start_link() :: {:ok, pid} | {:error, String.t()}
   def start_link() do
     Logger.debug("#{@logprefix} Starting...")
 
@@ -95,7 +95,7 @@ defmodule OpenAperture.OverseerApi.Publisher do
     payload = Map.put(payload, :hostname, module[:hostname])
     payload = Map.put(payload, :type, module[:type])
     payload = Map.put(payload, :event_type, Event.type(event))
-    
+
 		options = ConnectionOptionsResolver.get_for_broker(ManagerApi.get_api, state[:broker_id])
 		event_queue = QueueBuilder.build(ManagerApi.get_api, "system_modules", state[:exchange_id])
 
@@ -123,7 +123,7 @@ defmodule OpenAperture.OverseerApi.Publisher do
     Logger.debug("#{@logprefix} Publishing request to Overseer in exchange #{inspect dest_exchange_id}...")
 
     payload = Request.to_payload(request)
-    
+
     options = ConnectionOptionsResolver.resolve(ManagerApi.get_api, state[:broker_id], state[:exchange_id], dest_exchange_id)
     queue = QueueBuilder.build(ManagerApi.get_api, "overseer", dest_exchange_id)
 
