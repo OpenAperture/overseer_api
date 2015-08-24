@@ -8,6 +8,10 @@ This reusable Elixir messaging library provides an application for interacting w
 * Provides a ModuleRegistration module which will register your module with OpenAperture on startup
 * Provides a Heartbeat GenServer which will update the Overseer every 30 seconds with a status update.
 
+## Contributing
+
+To contribute to OpenAperture development, view our [contributing guide](http://openaperture.io/dev_resources/contributing.html)
+
 ## Usage
 
 Add the :openaperture_overseer_api application to your Elixir application or module.
