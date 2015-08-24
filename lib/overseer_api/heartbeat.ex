@@ -6,14 +6,14 @@
 require Logger
 
 defmodule OpenAperture.OverseerApi.Heartbeat do
-	use GenServer
+  use GenServer
 
   alias OpenAperture.OverseerApi.Publisher
   alias OpenAperture.OverseerApi.Events.Status, as: StatusEvent
 
   @moduledoc """
   This module contains the GenServer for a system module to interact with the Overseer system module
-  """  
+  """
 
   @doc """
   Specific start_link implementation
@@ -22,7 +22,7 @@ defmodule OpenAperture.OverseerApi.Heartbeat do
 
   {:ok, pid} | {:error, reason}
   """
-  @spec start_link() :: {:ok, pid} | {:error, String.t()}  
+  @spec start_link() :: {:ok, pid} | {:error, String.t}
   def start_link() do
     Logger.debug("[Heartbeat] Starting...")
 
@@ -49,7 +49,7 @@ defmodule OpenAperture.OverseerApi.Heartbeat do
 
   :ok
   """
-  @spec set_workload(List) :: :ok
+  @spec set_workload(list) :: :ok
   def set_workload(workload) do
     Agent.update(HeartbeatWorkload, fn _ -> workload end)
   end
@@ -60,7 +60,7 @@ defmodule OpenAperture.OverseerApi.Heartbeat do
 
   {:noreply, state}
   """
-  @spec handle_cast({:publish}, Map) :: {:noreply, Map}
+  @spec handle_cast({:publish}, map) :: {:noreply, map}
   def handle_cast({:publish}, state) do
     :timer.sleep(30000)
     Logger.debug("[Heartbeat] Heartbeat...")
@@ -70,16 +70,11 @@ defmodule OpenAperture.OverseerApi.Heartbeat do
   end
 
   def publish_status_event(_state) do
-    workload = Agent.get(HeartbeatWorkload, fn workload -> workload end)
-    workload = if workload == nil do
-      []
-    else
-      workload
-    end
+    workload = Agent.get(HeartbeatWorkload, fn workload -> workload end) || []
 
     Publisher.publish_event(%StatusEvent{
-      status: :active,
+      status:   :active,
       workload: workload
-    })    
+    })
   end
 end

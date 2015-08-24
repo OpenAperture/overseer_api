@@ -6,11 +6,11 @@
 require Logger
 
 defmodule OpenAperture.OverseerApi do
-	use Application
+  use Application
 
   @moduledoc """
   This module contains the application for the Overseer Api
-  """  
+  """
 
   @doc """
   Starts the given `_type`.
@@ -46,7 +46,7 @@ defmodule OpenAperture.OverseerApi do
   Note also that the `:transient` type is of little practical use, since when a
   supervision tree terminates, the reason is set to `:shutdown`, not `:normal`.
   """
-  @spec start(atom, [any]) :: :ok | {:error, String.t()}
+  @spec start(atom, [any]) :: :ok | {:error, String.t}
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
 

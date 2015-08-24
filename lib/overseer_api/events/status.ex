@@ -18,8 +18,6 @@ defmodule OpenAperture.OverseerApi.Events.Status do
     :status
     """
     @spec type(any) :: :status
-    def type(_) do 
-    	:status
-    end
+    def type(_), do: :status
   end
 end

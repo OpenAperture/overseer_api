@@ -6,13 +6,13 @@
 require Logger
 
 defmodule OpenAperture.OverseerApi.Publisher do
-	use GenServer
+  use GenServer
 
   @logprefix "[OverseerApi][Publisher]"
 
   @moduledoc """
   This module contains the GenServer for a system module to interact with the Overseer system module
-  """  
+  """
 
   alias OpenAperture.Messaging.ConnectionOptionsResolver
   alias OpenAperture.Messaging.AMQP.QueueBuilder
@@ -24,8 +24,8 @@ defmodule OpenAperture.OverseerApi.Publisher do
 
   alias OpenAperture.OverseerApi.ModuleRegistration
 
-	@connection_options nil
-	use OpenAperture.Messaging
+  @connection_options nil
+  use OpenAperture.Messaging
 
   @doc """
   Specific start_link implementation
@@ -34,13 +34,13 @@ defmodule OpenAperture.OverseerApi.Publisher do
 
   {:ok, pid} | {:error, reason}
   """
-  @spec start_link() :: {:ok, pid} | {:error, String.t()}	
+  @spec start_link() :: {:ok, pid} | {:error, String.t}
   def start_link() do
     Logger.debug("#{@logprefix} Starting...")
 
     state = %{
       exchange_id: Application.get_env(:openaperture_overseer_api, :exchange_id),
-      broker_id: Application.get_env(:openaperture_overseer_api, :broker_id),
+      broker_id:   Application.get_env(:openaperture_overseer_api, :broker_id),
     }
     GenServer.start_link(__MODULE__, state, name: __MODULE__)
   end
@@ -58,8 +58,8 @@ defmodule OpenAperture.OverseerApi.Publisher do
   """
   @spec publish_event(Event.t) :: :ok
   def publish_event(event) do
-  	GenServer.cast(__MODULE__, {:publish_event, event})
-	end
+    GenServer.cast(__MODULE__, {:publish_event, event})
+  end
 
   @doc """
   Method to publish Requests to an Overseer in a specific exchange
@@ -85,24 +85,18 @@ defmodule OpenAperture.OverseerApi.Publisher do
 
   {:noreply, state}
   """
-  @spec handle_cast({:publish_event, Event.t}, Map) :: {:noreply, Map}
+  @spec handle_cast({:publish_event, Event.t}, map) :: {:noreply, map}
   def handle_cast({:publish_event, event}, state) do
     Logger.debug("#{@logprefix} Publishing #{inspect Event.type(event)} event to Overseer...")
 
-    module = ModuleRegistration.get_module
+    payload = payload_from(event)
+    options = ConnectionOptionsResolver.get_for_broker(ManagerApi.get_api, state[:broker_id])
+    event_queue = QueueBuilder.build(ManagerApi.get_api, "system_modules", state[:exchange_id])
 
-    payload = Map.from_struct(event)
-    payload = Map.put(payload, :hostname, module[:hostname])
-    payload = Map.put(payload, :type, module[:type])
-    payload = Map.put(payload, :event_type, Event.type(event))
-    
-		options = ConnectionOptionsResolver.get_for_broker(ManagerApi.get_api, state[:broker_id])
-		event_queue = QueueBuilder.build(ManagerApi.get_api, "system_modules", state[:exchange_id])
-
-		case publish(options, event_queue, payload) do
-			:ok -> Logger.debug("#{@logprefix} Successfully published Overseer #{inspect Event.type(event)} event")
-			{:error, reason} -> Logger.error("#{@logprefix} Failed to publish Overseer #{inspect Event.type(event)} event:  #{inspect reason}")
-		end
+    case publish(options, event_queue, payload) do
+      :ok -> Logger.debug("#{@logprefix} Successfully published Overseer #{inspect Event.type(event)} event")
+      {:error, reason} -> Logger.error("#{@logprefix} Failed to publish Overseer #{inspect Event.type(event)} event:  #{inspect reason}")
+    end
     {:noreply, state}
   end
 
@@ -118,12 +112,12 @@ defmodule OpenAperture.OverseerApi.Publisher do
 
   {:noreply, state}
   """
-  @spec handle_cast({:publish_request, Request.t, String.t}, Map) :: {:noreply, Map}
+  @spec handle_cast({:publish_request, Request.t, String.t}, map) :: {:noreply, map}
   def handle_cast({:publish_request, request, dest_exchange_id}, state) do
     Logger.debug("#{@logprefix} Publishing request to Overseer in exchange #{inspect dest_exchange_id}...")
 
     payload = Request.to_payload(request)
-    
+
     options = ConnectionOptionsResolver.resolve(ManagerApi.get_api, state[:broker_id], state[:exchange_id], dest_exchange_id)
     queue = QueueBuilder.build(ManagerApi.get_api, "overseer", dest_exchange_id)
 
@@ -132,5 +126,14 @@ defmodule OpenAperture.OverseerApi.Publisher do
       {:error, reason} -> Logger.error("#{@logprefix} Failed to publish request to Overseer:  #{inspect reason}")
     end
     {:noreply, state}
+  end
+
+  @spec payload_from(Event.t) :: map
+  defp payload_from(event) do
+    module = ModuleRegistration.get_module
+    Map.from_struct(event)
+      |> Map.put(:hostname, module[:hostname])
+      |> Map.put(:type, module[:type])
+      |> Map.put(:event_type, Event.type(event))
   end
 end

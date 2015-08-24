@@ -1,11 +1,11 @@
 defmodule OpenAperture.OverseerApi.Request do
 
-  
+
   @moduledoc """
   Methods and Request struct for OverseerApi requests
   """
 
-  defstruct action: nil,
+  defstruct action:  nil,
             options: nil
 
   @type t :: %__MODULE__{}
@@ -21,16 +21,16 @@ defmodule OpenAperture.OverseerApi.Request do
 
   OpenAperture.OverseerApi.Request.t
   """
-  @spec from_payload(Map) :: OpenAperture.OverseerApi.Request.t
+  @spec from_payload(map) :: OpenAperture.OverseerApi.Request.t
   def from_payload(payload) do
     %OpenAperture.OverseerApi.Request{
-      action: payload[:action],
+      action:  payload[:action],
       options: payload[:options]
     }
   end
 
-  @spec to_payload(OpenAperture.OverseerApi.Request.t) :: Map
+  @spec to_payload(OpenAperture.OverseerApi.Request.t) :: map
   def to_payload(request) do
     Map.from_struct(request)
-  end 
+  end
 end
