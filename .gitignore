@@ -4,3 +4,4 @@ erl_crash.dump
 *.ez
 config/system.exs
 overseer_api.sublime-workspace
+doc/

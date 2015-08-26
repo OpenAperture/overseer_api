@@ -58,7 +58,7 @@ defmodule OpenAperture.OverseerApi.Heartbeat do
   GenServer callback for handling the :publish_event event.  This method
   will publish a "heartbeat" (StatuEvent) every 30 seconds
 
-  {:noreply, state}
+      {:noreply, state}
   """
   @spec handle_cast({:publish}, map) :: {:noreply, map}
   def handle_cast({:publish}, state) do

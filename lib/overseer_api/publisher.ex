@@ -83,7 +83,7 @@ defmodule OpenAperture.OverseerApi.Publisher do
   GenServer callback for handling the :publish_event event.  This method
   will publish events to the Overseer system module
 
-  {:noreply, state}
+      {:noreply, state}
   """
   @spec handle_cast({:publish_event, Event.t}, map) :: {:noreply, map}
   def handle_cast({:publish_event, event}, state) do
@@ -110,7 +110,7 @@ defmodule OpenAperture.OverseerApi.Publisher do
 
   The `dest_exchange_id` represents the exchange in which the Overseer should exist
 
-  {:noreply, state}
+      {:noreply, state}
   """
   @spec handle_cast({:publish_request, Request.t, String.t}, map) :: {:noreply, map}
   def handle_cast({:publish_request, request, dest_exchange_id}, state) do

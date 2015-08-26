@@ -29,11 +29,11 @@ defmodule OpenAperture.OverseerApi.Mixfile do
   # Type `mix help deps` for more examples and options
   defp deps do
     [
-      {:ex_doc, "0.7.3", only: :test},
+      {:ex_doc, "0.8.4", only: :test},
       {:earmark, "0.1.17", only: :test},  
       {:poison, "~> 1.4.0", override: true},
-      {:openaperture_messaging, git: "https://github.com/OpenAperture/messaging.git", ref: "e48c52b98abc86f4404954e7b4c85b090e83c69c", override: true},
-      {:openaperture_manager_api, git: "https://github.com/OpenAperture/manager_api.git", ref: "84eedf15d805e6a827b3d62978b5a20244c99094", override: true},
+      {:openaperture_messaging, git: "https://github.com/OpenAperture/messaging.git", ref: "380ce611a038dd8f7afb4fa7f660aeac06475af0", override: true},
+      {:openaperture_manager_api, git: "https://github.com/OpenAperture/manager_api.git", ref: "dc06f0a484410e7707dab8e96807d54a564557ed", override: true},
 
       #test dependencies
       {:exvcr, github: "parroty/exvcr", override: true},
